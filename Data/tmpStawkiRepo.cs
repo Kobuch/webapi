@@ -30,9 +30,12 @@ namespace Jppapi.Data
             return stawki;
         }
 
-   
+        public IEnumerable<Stawka> GetownStawki(string login)
+        {
+            throw new NotImplementedException();
+        }
 
-       public Stawka GetStawkaById(int id)
+        public Stawka GetStawkaById(int id)
         {
             return new Stawka { Stawki_id = 0, Login = "noname", Dniowka_zagraniczna = 400, Stawka_podstawowa = 100 };
         }
