@@ -4,14 +4,16 @@ using Jppapi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Jppapi.Migrations
 {
     [DbContext(typeof(RozliczenieContext))]
-    partial class RozliczenieContextModelSnapshot : ModelSnapshot
+    [Migration("20210612121536_dodaniepolalogindotabelirozliczaniednii")]
+    partial class dodaniepolalogindotabelirozliczaniednii
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -30,11 +30,11 @@ namespace Jppapi.Controllers
 
 
 
-        //Get api/stawki
+        //Get {login}/api/stawki
         [HttpGet]
         public ActionResult<IEnumerable<StawkaReadDto>> Get(string login)
         {
-            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return NotFound();
+            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
 
             var stawkiItems = _repository.GetAllStawki();
             return Ok(_mapper.Map<IEnumerable<StawkaReadDto>>(stawkiItems));
@@ -42,10 +42,12 @@ namespace Jppapi.Controllers
 
 
 
-        //GET api/stawki/{id}
+        //GET {login}/api/stawki/{id}
         [HttpGet("{id}", Name = "GetStawkaById")]
-        public ActionResult<StawkaReadDto> GetStawkaById(int id)
+        public ActionResult<StawkaReadDto> GetStawkaById(int id, string login)
         {
+            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
+
             var stawkaItem = _repository.GetStawkaById(id);
             if (stawkaItem != null)
             {

@@ -26,7 +26,7 @@ namespace Jppapi.Data
 
         public bool CzyMaUprawnienia(string login)
         {
-            return _context.Loginy.Any(x => x.Login == login && !x.Zablokowany);
+            return _context.Loginy.Any(x => x.Login.ToUpper() == login.ToUpper() && !x.Zablokowany);
         }
 
         public void DeleteLogowanie(Logowanie logowanie)
