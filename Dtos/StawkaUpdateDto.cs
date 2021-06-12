@@ -12,7 +12,7 @@ namespace Jppapi.Dtos
         [MaxLength(50)]
         public string Login { get; set; }
 
-      //  public Nullable<decimal> Stawka_podstawowa { get; set; }
+        public Nullable<decimal> Stawka_podstawowa { get; set; }
 
         public Nullable<decimal> Dniowka_zagraniczna { get; set; }
     }

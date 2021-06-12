@@ -37,6 +37,7 @@ namespace Jppapi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
            // services.AddScoped<IStawkieRepo, TmpStawkiRepo>();
             services.AddScoped<IStawkieRepo, SqlStawkiRepo>();
+            services.AddScoped<ILogowanieRepo, SqlLogowanieRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

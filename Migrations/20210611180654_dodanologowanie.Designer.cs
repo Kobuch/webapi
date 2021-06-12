@@ -4,14 +4,16 @@ using Jppapi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Jppapi.Migrations
 {
     [DbContext(typeof(RozliczenieContext))]
-    partial class RozliczenieContextModelSnapshot : ModelSnapshot
+    [Migration("20210611180654_dodanologowanie")]
+    partial class dodanologowanie
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,39 +44,6 @@ namespace Jppapi.Migrations
                     b.HasKey("Login_id");
 
                     b.ToTable("Loginy");
-                });
-
-            modelBuilder.Entity("Jppapi.Models.RozliczenieDnia", b =>
-                {
-                    b.Property<int>("Rozliczenie_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("Dniowka")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Gdzie")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("NoWorkDay")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("NrPracownika")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Procent")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("StawkaDzienna")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Rozliczenie_id");
-
-                    b.ToTable("RozliczeniaDnii");
                 });
 
             modelBuilder.Entity("Jppapi.Models.Stawka", b =>

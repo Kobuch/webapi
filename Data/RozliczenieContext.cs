@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace Jppapi.Data
 {
-    public class RozliczenieContext:DbContext
+    public class RozliczenieContext : DbContext
     {
-        public RozliczenieContext(DbContextOptions<RozliczenieContext> opt):base(opt)
+        public RozliczenieContext(DbContextOptions<RozliczenieContext> opt) : base(opt)
         {
 
         }
 
         public DbSet<Stawka> Stawki { get; set; }
+        public DbSet<Logowanie> Loginy { get; set; }
+        public DbSet<RozliczenieDnia> RozliczeniaDnii {get;set;}
     }
 }

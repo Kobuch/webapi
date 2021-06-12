@@ -13,5 +13,6 @@ namespace Jppapi.Data
         void CreateStawka(Stawka stawka);
         void UpdateStawka(Stawka stawka);
         void DeleteStawka(Stawka stawka);
+
     }
 }

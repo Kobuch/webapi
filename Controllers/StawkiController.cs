@@ -12,26 +12,30 @@ using Microsoft.AspNetCore.JsonPatch;
 
 namespace Jppapi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("{login}/api/[controller]")]
     [ApiController]
     public class StawkiController : ControllerBase
     {
 
         private readonly IStawkieRepo _repository;
         private readonly IMapper _mapper;
+        private readonly ILogowanieRepo _reposPomocnicze;
 
-        public StawkiController(IStawkieRepo repository, IMapper mapper)
+        public StawkiController(IStawkieRepo repository, IMapper mapper, ILogowanieRepo logowanieRepo)
         {
             _repository = repository;
             _mapper = mapper;
+            _reposPomocnicze = logowanieRepo;
         }
 
 
 
         //Get api/stawki
         [HttpGet]
-        public ActionResult<IEnumerable<StawkaReadDto>> Get()
+        public ActionResult<IEnumerable<StawkaReadDto>> Get(string login)
         {
+            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return NotFound();
+
             var stawkiItems = _repository.GetAllStawki();
             return Ok(_mapper.Map<IEnumerable<StawkaReadDto>>(stawkiItems));
         }
