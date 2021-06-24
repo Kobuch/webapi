@@ -43,7 +43,7 @@ namespace Jppapi.Data
 
         public IEnumerable<Stawka> GetownStawki(string login)
         {
-            return _context.Stawki.Where(x=>x.Login.ToUpper()==login.ToUpper()).ToList();
+             return _context.Stawki.Where(x=>x.Login.ToUpper()==login.ToUpper()).ToList();
         }
 
         public Stawka GetStawkaById(int id)
