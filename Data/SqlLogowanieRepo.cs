@@ -24,10 +24,37 @@ namespace Jppapi.Data
             _context.Loginy.Add(logowanie);
         }
 
+        public Logowanie CzyMaDostep(string login, string password)
+        {
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password)) 
+            {
+                return null;
+            }
+
+            if (_context.Loginy.Any(user =>
+                    user.Login.ToUpper() == login.ToUpper() &&
+                    user.Password.ToUpper() == password.ToUpper() &&
+                   !user.Zablokowany)
+               )
+            {
+                return _context.Loginy.First(user => user.Login.ToUpper() == login.ToUpper());
+            }
+            else
+                return null;
+
+
+        }
+
+
+
         public bool CzyMaUprawnienia(string login)
         {
+            return true;
             return _context.Loginy.Any(x => x.Login.ToUpper() == login.ToUpper() && !x.Zablokowany);
         }
+
+
+
 
         public void DeleteLogowanie(Logowanie logowanie)
         {

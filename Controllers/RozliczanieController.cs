@@ -8,7 +8,7 @@ using Jppapi.Models;
 
 namespace Jppapi.Controllers
 {
-    [Route("{login}/api/[controller]")]
+    [Route("/api/[controller]")]
     [ApiController]
     public class RozliczanieController : ControllerBase
     {

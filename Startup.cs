@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 using Jppapi.Data;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Jppapi.Services;
 
 namespace Jppapi
 {
@@ -39,6 +43,33 @@ namespace Jppapi
             services.AddScoped<IStawkieRepo, SqlStawkiRepo>();
             services.AddScoped<ILogowanieRepo, SqlLogowanieRepo>();
             services.AddScoped<IRozliczanieDniiRepo, SqlRozliczanieDniiRepo>();
+
+           
+
+            var key = "Zastapic potem kluczem usera";
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(
+                x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+           // services.AddSingleton<IAuthManager>(new AuthManager(key), ILogowanieRepo);
+
+                services.AddScoped<IAuthManager ,  AuthManager > ();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +82,7 @@ namespace Jppapi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

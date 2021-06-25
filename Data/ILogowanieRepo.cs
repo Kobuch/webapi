@@ -16,5 +16,7 @@ namespace Jppapi.Data
         void CreateLogowanie(Logowanie logowanie);
         void UpdateLogowanie(Logowanie logowanie);
         void DeleteLogowanie(Logowanie logowanie);
+
+        Logowanie CzyMaDostep(string login, string password);
     }
 }

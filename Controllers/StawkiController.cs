@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.JsonPatch;
 
 namespace Jppapi.Controllers
 {
-    [Route("{login}/api/[controller]")]
+    [Route("/api/[controller]")]
     [ApiController]
     public class StawkiController : ControllerBase
     {
@@ -36,8 +36,8 @@ namespace Jppapi.Controllers
         {
             if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
 
-            //var stawkiItems = _repository.GetAllStawki();
-            var stawkiItems = _repository.GetownStawki(login);
+            var stawkiItems = _repository.GetAllStawki();
+           // var stawkiItems = _repository.GetownStawki(login);
             return Ok(_mapper.Map<IEnumerable<StawkaReadDto>>(stawkiItems));
         }
 
