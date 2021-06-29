@@ -1,47 +1,54 @@
 ﻿using Jppapi.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Jppapi.Data;
 using Jppapi.Dtos;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Jppapi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/api/[controller]")]
     [ApiController]
+    [EnableCors("MyPolicy")]
+    [Authorize]
     public class StawkiController : ControllerBase
     {
 
         private readonly IStawkieRepo _repository;
         private readonly IMapper _mapper;
+        private readonly ILogowanieRepo _reposPomocnicze;
 
-        public StawkiController(IStawkieRepo repository, IMapper mapper)
+        public StawkiController(IStawkieRepo repository, IMapper mapper, ILogowanieRepo logowanieRepo)
         {
             _repository = repository;
             _mapper = mapper;
+            _reposPomocnicze = logowanieRepo;
         }
 
 
 
-        //Get api/stawki
+        //Get /api/stawki
         [HttpGet]
-        public ActionResult<IEnumerable<StawkaReadDto>> Get()
+        public ActionResult<IEnumerable<StawkaReadDto>> Get(string login="")
         {
+          //  if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
+
             var stawkiItems = _repository.GetAllStawki();
+           // var stawkiItems = _repository.GetownStawki(login);
             return Ok(_mapper.Map<IEnumerable<StawkaReadDto>>(stawkiItems));
         }
 
 
 
-        //GET api/stawki/{id}
+        //GET {login}/api/stawki/{id}
         [HttpGet("{id}", Name = "GetStawkaById")]
-        public ActionResult<StawkaReadDto> GetStawkaById(int id)
+        public ActionResult<StawkaReadDto> GetStawkaById(int id, string login="")
         {
+      
+
             var stawkaItem = _repository.GetStawkaById(id);
             if (stawkaItem != null)
             {

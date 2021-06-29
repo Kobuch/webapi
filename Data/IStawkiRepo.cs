@@ -9,9 +9,11 @@ namespace Jppapi.Data
         bool SaveChanges();
 
         IEnumerable<Stawka> GetAllStawki();
+        IEnumerable<Stawka> GetownStawki(string login);
         Stawka GetStawkaById(int id);
         void CreateStawka(Stawka stawka);
         void UpdateStawka(Stawka stawka);
         void DeleteStawka(Stawka stawka);
+
     }
 }

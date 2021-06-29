@@ -9,7 +9,7 @@ namespace Jppapi.Dtos
     {
         public int Stawki_id { get; set; }
         public string Login { get; set; }
-     //   public Nullable<decimal> Stawka_podstawowa { get; set; }
+        public Nullable<decimal> Stawka_podstawowa { get; set; }
         public Nullable<decimal> Dniowka_zagraniczna { get; set; }
     
     }

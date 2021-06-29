@@ -4,14 +4,16 @@ using Jppapi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Jppapi.Migrations
 {
     [DbContext(typeof(RozliczenieContext))]
-    partial class RozliczenieContextModelSnapshot : ModelSnapshot
+    [Migration("20210611191548_dodanietabelirozliczeniednia2")]
+    partial class dodanietabelirozliczeniednia2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,9 +60,6 @@ namespace Jppapi.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Gdzie")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Login")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("NoWorkDay")

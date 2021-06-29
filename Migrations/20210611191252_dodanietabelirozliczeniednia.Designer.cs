@@ -4,14 +4,16 @@ using Jppapi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Jppapi.Migrations
 {
     [DbContext(typeof(RozliczenieContext))]
-    partial class RozliczenieContextModelSnapshot : ModelSnapshot
+    [Migration("20210611191252_dodanietabelirozliczeniednia")]
+    partial class dodanietabelirozliczeniednia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,13 +56,10 @@ namespace Jppapi.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("Dniowka")
+                    b.Property<decimal>("Dniowka")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Gdzie")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Login")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("NoWorkDay")
@@ -69,10 +68,10 @@ namespace Jppapi.Migrations
                     b.Property<int>("NrPracownika")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Procent")
+                    b.Property<int>("Procent")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("StawkaDzienna")
+                    b.Property<decimal>("StawkaDzienna")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Rozliczenie_id");
