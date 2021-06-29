@@ -2,13 +2,16 @@
 
 Api dla programu do raportowania dnii pracujacych dla ekipy wyjazdowej
 
-wywołania 
 
+
+Autoryzacja Bearer Token
 Pobranie token  
 POST                 /name/authenticate   body:  "Username": "...",  "Password": "..." W odpowiedzi otrzymasz token 
 
 
-Autoryzacja Bearer Token
+
+
+wywołania 
 
 GET                  /api/[controler]    
 POST                 /api/[controler]
@@ -20,10 +23,11 @@ Stawki              - obsługa ustawiania stawek [model Stawki - StawkiDto]
                     np. api/Stawki/1
                 
 Rozliczanie          - obsługa ustawiania Rolziczenia dnii [model RozliczenieDnia -RozliczenieDniaDto] 
-                    np. api/Rozliczanie
-                    np. uapi/Rozliczanie/1
+                    np. login/api/Rozliczanie
+                    np. login/api/Rozliczanie/1
 
-Logowanie- repozytorium wewetrzne nie wystawione jako zewnetrzne API, na rzzie zmianiac bezposrednio w Bazie SQL
+Uwaga
+Logowanie- repozytorium wewetrzne z danymi do logowania nie wystawione jako zewnetrzne API, na razie zmianiac bezposrednio w Bazie SQL
  
  
 

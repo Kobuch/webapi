@@ -1,19 +1,19 @@
 ﻿using Jppapi.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Jppapi.Data;
 using Jppapi.Dtos;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Jppapi.Controllers
 {
     [Route("/api/[controller]")]
     [ApiController]
+    [EnableCors("MyPolicy")]
+    [Authorize]
     public class StawkiController : ControllerBase
     {
 
@@ -30,11 +30,11 @@ namespace Jppapi.Controllers
 
 
 
-        //Get {login}/api/stawki
+        //Get /api/stawki
         [HttpGet]
-        public ActionResult<IEnumerable<StawkaReadDto>> Get(string login)
+        public ActionResult<IEnumerable<StawkaReadDto>> Get(string login="")
         {
-            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
+          //  if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
 
             var stawkiItems = _repository.GetAllStawki();
            // var stawkiItems = _repository.GetownStawki(login);
@@ -45,9 +45,9 @@ namespace Jppapi.Controllers
 
         //GET {login}/api/stawki/{id}
         [HttpGet("{id}", Name = "GetStawkaById")]
-        public ActionResult<StawkaReadDto> GetStawkaById(int id, string login)
+        public ActionResult<StawkaReadDto> GetStawkaById(int id, string login="")
         {
-            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
+      
 
             var stawkaItem = _repository.GetStawkaById(id);
             if (stawkaItem != null)

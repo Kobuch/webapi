@@ -1,5 +1,6 @@
 ﻿using Jppapi.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,17 @@ namespace Jppapi.Controllers
 
     public class UserCred
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
     }
 
 
     [Authorize]
     [ApiController]
+       
+    [EnableCors("MyPolicy")]
     [Route("[controller]")]
+
     public class NameController : ControllerBase
     {
         private readonly IAuthManager authManager;
@@ -32,21 +36,17 @@ namespace Jppapi.Controllers
         [HttpPost("authenticate")]
         public IActionResult Autenticate([FromBody] UserCred userCred)
         {   
-            var user = authManager.Autenticate(userCred.Username, userCred.Password);
+            var user = authManager.Autenticate(userCred.username, userCred.password);
             if (user.Login == null)
                 return Unauthorized();
 
             return Ok(user);
         }
-
+        
         [HttpGet]
         public IEnumerable<string> Get([FromHeader] string login)
         {
-
-            //   System.Net.Http.Headers.HttpRequestHeaders headers = this.Request.Headers;
-
-            return new string[] { "value", "value2" };
-
+            return new string[] { "test value", };
         }
     }
 }

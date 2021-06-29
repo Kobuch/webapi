@@ -5,11 +5,16 @@ using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Collections.Generic;
 using Jppapi.Models;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Jppapi.Controllers
 {
-    [Route("/api/[controller]")]
+    [Authorize]
+    [Route("{login}/api/[controller]")]
     [ApiController]
+    [EnableCors("MyPolicy")]
+
     public class RozliczanieController : ControllerBase
     {
         private readonly IRozliczanieDniiRepo _repository;
@@ -24,36 +29,48 @@ namespace Jppapi.Controllers
         }
 
 
-        //Get {login}/api/rozliczanie
+        //Get /api/rozliczanie
         [HttpGet]
         public ActionResult<IEnumerable<RozliczeniaDniaReadDto>> Get(string login)
         {
-            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
+            IEnumerable<RozliczenieDnia> rozliczanieDniaItems;
 
-            // var rozliczanieDniaItems = _repository.GetAllRozliczenieDnia();
-            var rozliczanieDniaItems = _repository.GetOwnRozliczenieDnia(login);
+            if (login.ToUpper()=="ALL")
+            {
+                  rozliczanieDniaItems = _repository.GetAllRozliczenieDnia();
+            }
+            else
+            {
+                 rozliczanieDniaItems = _repository.GetOwnRozliczenieDnia(login);
+            }
+
+
             return Ok(_mapper.Map<IEnumerable<RozliczeniaDniaReadDto>>(rozliczanieDniaItems));
         }
 
-        //Get {login}/api/rozliczanie/{id}
+        //Get login/api/rozliczanie/{id}
         [HttpGet("{id}", Name = "GetRozliczenieDniaById")]
         public ActionResult<RozliczeniaDniaReadDto> GetRozliczeniaDniabyid(int id, string login)
         {
-            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
+
+
+           // if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
 
             var rozliczanieDniaItems = _repository.GetRozliczenieDniaById(id);
-            if (rozliczanieDniaItems != null)
+
+
+            if (rozliczanieDniaItems != null && rozliczanieDniaItems.Login.ToUpper()==login.ToUpper()  )
             {
                 return Ok(_mapper.Map<RozliczeniaDniaReadDto>(rozliczanieDniaItems));
             }
             return NotFound();
         }
 
-        //Post {login}/api/rozliczanie
+        //Post login/api/rozliczanie
         [HttpPost]
         public ActionResult<RozliczeniaDniaReadDto> CreateRozliczeniaDniaDto(RozliczeniaDniaCreateDto  rozliczeniaDniaCreateDto, string login)
         {
-            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
+            if (rozliczeniaDniaCreateDto.Login.ToUpper() != login.ToUpper()) return Content("Bład: niezgodnośc loginów");
 
             var rozliczanieDniaModel = _mapper.Map<RozliczenieDnia>(rozliczeniaDniaCreateDto);
             _repository.CreateRozliczenieDnia(rozliczanieDniaModel);
@@ -62,11 +79,11 @@ namespace Jppapi.Controllers
             return Ok(_mapper.Map<RozliczeniaDniaReadDto>(rozliczanieDniaModel));
         }
 
-        //PUT {login}/api/rozliczanie
+        //PUT login/api/rozliczanie
         [HttpPut("{id}")]
         public ActionResult UpdateRozliczeniaDnia(int id, RozliczeniaDniaUpdateDto  rozliczeniaDniaUpdateDto, string login)
         {
-            if (!_reposPomocnicze.CzyMaUprawnienia(login)) return Content("Brak uprawnien do dostepu do danych");
+            if (rozliczeniaDniaUpdateDto.Login.ToUpper() != login.ToUpper()) return Content("Bład: niezgodnośc loginów");
 
             var rozliczeniaDniaModelFromRepo = _repository.GetRozliczenieDniaById(id);
             if (rozliczeniaDniaModelFromRepo == null)
@@ -82,7 +99,7 @@ namespace Jppapi.Controllers
             return NoContent();
         }
 
-        //PATCH {login}/api/rozliczanie/{id}
+        //PATCH /api/rozliczanie/{id}
         [HttpPatch("{id}")]
         public ActionResult PartialRozliczeniaDniaUpdate(int id, JsonPatchDocument<RozliczeniaDniaUpdateDto> patchDoc)
         {
@@ -105,15 +122,21 @@ namespace Jppapi.Controllers
 
         }
 
-        //DELETE {login}/api/rozliczanie/{id}
+        //DELETE login/api/rozliczanie/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteRozliczeniaDnia(int id)
+        public ActionResult DeleteRozliczeniaDnia(int id, string login)
         {
+
             var rozliczeniaDniaModelFromRepo = _repository.GetRozliczenieDniaById(id);
             if (rozliczeniaDniaModelFromRepo == null)
             {
+                return NotFound("niezgodnosc loginow");
+            }
+            if (rozliczeniaDniaModelFromRepo.Login.ToUpper() != login.ToUpper())
+            {
                 return NotFound();
             }
+
             _repository.DeleteRozliczenieDnia(rozliczeniaDniaModelFromRepo);
             _repository.SaveChanges();
             return NoContent();
